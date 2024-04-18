@@ -1,10 +1,10 @@
 pipeline{
   agent any
-  environment {
-     AWS_ACCESS_KEY_ID = Credentials('AWS_ACCESS_KEY_ID')
-     AWS_SECRET_ACCESS_KEY = Credentials('AWS_SECRET_ACCESS_KEY')
-     AWS_DEFAULT_REGION = 'us-east-2'
-  }
+ environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+        AWS_DEFAULT_REGION = 'us-east-2'
+    }
 
     stages{
         stage('Checkout SCM'){
@@ -14,11 +14,7 @@ pipeline{
                 }
             }
         }
-      }
-
-
-    stages{
-        stage('Initializing Terraform'){
+       stage('Initializing Terraform'){
             steps{
                 script{
                    dir('EKS'){
@@ -27,9 +23,6 @@ pipeline{
                 }
             }
         }
-      }
-
-      stages{
         stage('Formatting Terraform'){
             steps{
                 script{
@@ -39,38 +32,34 @@ pipeline{
                 }
             }
         }
-      }
-
-      stages{
         stage('Validating Terraform'){
             steps{
                 script{
                    dir('EKS'){
-                    sh 'terraform init'
+                    sh 'terraform validate'
                    }
                 }
             }
         }
-      }
-
-      stages{
         stage('Plan Terraform'){
             steps{
                 script{
                    dir('EKS'){
-                    sh 'terraform init'
+                    sh 'terraform plan'
                    }
                   input(message: "Are you sure to proceed?", ok: "proceed")
                 }
             }
         }
-      }
-
-####################
-#addterraformapply
-######################
- 
-      stages{
+        stage('Apply Terraform'){
+            steps{
+                script{
+                   dir('EKS'){
+                    sh 'terraform $action --auto-approve'
+                   }
+                }
+            }
+        }
         stage('Deploying Nginx'){
             steps{
                 script{
@@ -83,7 +72,4 @@ pipeline{
             }
         }
       }
-      
-
-
 }  
