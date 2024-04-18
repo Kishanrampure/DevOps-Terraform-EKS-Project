@@ -1,0 +1,89 @@
+pipeline{
+  agent any
+  environment {
+     AWS_ACCESS_KEY_ID = Credentials('AWS_ACCESS_KEY_ID')
+     AWS_SECRET_ACCESS_KEY = Credentials('AWS_SECRET_ACCESS_KEY')
+     AWS_DEFAULT_REGION = 'us-east-2'
+  }
+
+    stages{
+        stage('Checkout SCM'){
+            steps{
+                script{
+                   checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Kishanrampure/DevOps-Terraform-EKS-Project.git']])
+                }
+            }
+        }
+      }
+
+
+    stages{
+        stage('Initializing Terraform'){
+            steps{
+                script{
+                   dir('EKS'){
+                    sh 'terraform init'
+                   }
+                }
+            }
+        }
+      }
+
+      stages{
+        stage('Formatting Terraform'){
+            steps{
+                script{
+                   dir('EKS'){
+                    sh 'terraform fmt'
+                   }
+                }
+            }
+        }
+      }
+
+      stages{
+        stage('Validating Terraform'){
+            steps{
+                script{
+                   dir('EKS'){
+                    sh 'terraform init'
+                   }
+                }
+            }
+        }
+      }
+
+      stages{
+        stage('Plan Terraform'){
+            steps{
+                script{
+                   dir('EKS'){
+                    sh 'terraform init'
+                   }
+                  input(message: "Are you sure to proceed?", ok: "proceed")
+                }
+            }
+        }
+      }
+
+####################
+#addterraformapply
+######################
+ 
+      stages{
+        stage('Deploying Nginx'){
+            steps{
+                script{
+                   dir('EKS/configuration-files'){
+                    sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                        sh 'kubectl apply -f deployment.yml'
+                        sh 'kubectl apply -f service.yml'
+                   }
+                }
+            }
+        }
+      }
+      
+
+
+}  
