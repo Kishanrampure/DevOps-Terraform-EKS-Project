@@ -65,6 +65,7 @@ pipeline{
                 script{
                    dir('EKS'){
                     sh 'aws eks update-kubeconfig --name my-eks-cluster'
+                    sh 'aws eks create-access-entry --cluster-name my-eks-cluster --principal-arn arn:aws:iam::111122223333:user/username --type STANDARD --username username'
                         sh 'kubectl apply -f nginx.yml'
                    }
                 }

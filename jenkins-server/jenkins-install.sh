@@ -15,10 +15,6 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 sudo apt-get update
 sudo apt-get install jenkins -y
 sudo usermod -aG root jenkins
-##################################################################################
-#Git installation 
-################################################################################# 
-sudo apt install git-all -y 
 
 #################################################################################
 # Install AWS CLI 
@@ -67,3 +63,11 @@ sudo apt install kubernetes -y
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
+
+##################################################################################
+#Kubectl installation 
+################################################################################# 
+ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+ echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+ kubectl version --client
