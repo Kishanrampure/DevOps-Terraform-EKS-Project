@@ -59,10 +59,6 @@ This project utilizes Terraform to automate the creation and configuration of an
 ![AWS SAK](https://github.com/Kishanrampure/DevOps-Terraform-EKS-Project/assets/121344253/424ece50-3530-4ca4-9d1a-d9b800f56548)
 
 ####
-| Name             | ID                                                                |
-| ----------------- | ------------------------------------------------------------------ |
-| AWS_ACCESS_KEY_ID | <Access key ID> |
-| AWS_SECRET_ACCESS_KEY | <Secret access key ID> |
 
 ## Repository Configure in Jenkins Pipeline
 > Create a Jenkins Pipeline Job  
