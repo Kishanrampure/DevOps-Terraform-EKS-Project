@@ -79,3 +79,8 @@ This project utilizes Terraform to automate the creation and configuration of an
 ## Connect to the cluster and verify
 - [x] Setup Connection to created EKS cluster in with your local machine or cloud shell.
 - [x] Copy the URL from AWS load balancer, paste it into your browser, and verify that application is deployed.
+
+### Cleanup
+```sh
+terraform destroy --auto-approve
+```
